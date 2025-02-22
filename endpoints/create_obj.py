@@ -31,6 +31,9 @@ class CreateObj(Endpoint):
     def get_name(self):
         return self.get_data()['name']
 
+    def get_year(self):
+        return self.get_data()['data']['year']
 
-
+    def get_price(self):
+        return self.get_data()['data']['price']
 
