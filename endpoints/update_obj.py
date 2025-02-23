@@ -3,7 +3,7 @@ from dateutil.parser import isoparse
 from endpoints.base_endpoint import Endpoint
 
 
-class CreateObj(Endpoint):
+class UpdateObj(Endpoint):
     schema = {
         "type": "object",
         "properties": {
@@ -19,23 +19,26 @@ class CreateObj(Endpoint):
                 },
                 "required": ["year", "price", "CPU model", "Hard disk size"]
             },
-            "createdAt": {"type": "string"}
+            "updatedAt": {"type": "string"}
         },
-        "required": ["id", "name", "data", "createdAt"]
+        "required": ["id", "name", "data", "updatedAt"]
     }
 
-    def new_obj(self, payload):
-        self.response = requests.post(f'{self.url}/objects',
-                                      json=payload)
+    def update_obj(self, update_payload, object_id):
+        self.response = requests.put(f'{self.url}/objects/{object_id}',
+                                     json=update_payload)
         self.response_json = self.response.json()
 
-    def get_name(self):
-        return self.get_data()['name']
-
-    def get_id(self):
+    def get_updated_obj_id(self):
         return self.get_data()['id']
 
-    def get_create_time(self):
-        create_time = self.get_data()['createdAt']
-        dt = isoparse(create_time)
+    def get_updated_obj_name(self):
+        return self.get_data()['name']
+
+    def get_updated_obj_data(self):
+        return self.get_data()['data']
+
+    def get_update_time(self):
+        update_time = self.get_data()['updatedAt']
+        dt = isoparse(update_time)
         return dt.replace(microsecond=0).isoformat()

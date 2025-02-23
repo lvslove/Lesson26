@@ -1,9 +1,8 @@
 import requests
-from dateutil.parser import isoparse
 from endpoints.base_endpoint import Endpoint
 
 
-class CreateObj(Endpoint):
+class GetSingleObj(Endpoint):
     schema = {
         "type": "object",
         "properties": {
@@ -18,24 +17,20 @@ class CreateObj(Endpoint):
                     "Hard disk size": {"type": "string"}
                 },
                 "required": ["year", "price", "CPU model", "Hard disk size"]
-            },
-            "createdAt": {"type": "string"}
+            }
         },
-        "required": ["id", "name", "data", "createdAt"]
+        "required": ["id", "name", "data"]
     }
 
-    def new_obj(self, payload):
-        self.response = requests.post(f'{self.url}/objects',
-                                      json=payload)
+    def get_single_obj(self, obj_id):
+        self.response = requests.get(url=f"{self.url}/objects/{obj_id}")
         self.response_json = self.response.json()
 
-    def get_name(self):
-        return self.get_data()['name']
-
-    def get_id(self):
+    def get_single_obj_id(self):
         return self.get_data()['id']
 
-    def get_create_time(self):
-        create_time = self.get_data()['createdAt']
-        dt = isoparse(create_time)
-        return dt.replace(microsecond=0).isoformat()
+    def get_single_obj_name(self):
+        return self.get_data()['name']
+
+    def get_single_obj_data(self):
+        return self.get_data()['data']

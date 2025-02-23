@@ -21,3 +21,8 @@ class Endpoint:
 
     def get_data(self):
         return self.response.json()
+
+    def check_response_is_404(self):
+        assert self.response.status_code == 404,\
+            f'{self.response.status_code}'
+
